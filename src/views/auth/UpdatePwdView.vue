@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ElMessage } from "element-plus";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import {ElMessage} from "element-plus";
+import {ref} from "vue";
+import {useRouter} from "vue-router";
 import axios from "axios";
 
 const router = useRouter();
@@ -14,11 +14,11 @@ const updatePwdForm = ref({
 const updatePwdFormRef1 = ref(null);
 const updatePwdFormRef2 = ref(null);
 const rules = {
-  name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-  oldPassword: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
+  name: [{required: true, message: "请输入用户名", trigger: "blur"}],
+  oldPassword: [{required: true, message: "请输入旧密码", trigger: "blur"}],
   newPassword: [
-    { required: true, message: "请输入新密码", trigger: "blur" },
-    { min: 8, message: "密码长度不能小于 8 位", trigger: "blur" },
+    {required: true, message: "请输入新密码", trigger: "blur"},
+    {min: 8, message: "密码长度不能小于 8 位", trigger: "blur"},
     {
       pattern: /^[A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]+$/,
       message: "仅允许字母、数字及特殊符号",
@@ -26,7 +26,7 @@ const rules = {
     },
   ],
   confirmNewPassword: [
-    { required: true, message: "请再次输入新密码", trigger: "blur" },
+    {required: true, message: "请再次输入新密码", trigger: "blur"},
     {
       validator: (rule, value, callback) => {
         if (value === updatePwdForm.value.newPassword) {
@@ -47,12 +47,23 @@ async function handleUpdatePwd() {
       updatePwdFormRef2.value.validate(),
     ]);
     if (valid1 && valid2) {
+
+      // 转化成表单参数格式
+      const params = new URLSearchParams()
+      params.append('name', updatePwdForm.value.name)
+      params.append('oldPassword', updatePwdForm.value.oldPassword)
+      params.append('newPassword', updatePwdForm.value.newPassword)
+
       const response = await axios.post(
-        "http://127.0.0.1:8080/api/user/updatePwd",
-        updatePwdForm.value
+          "/api/user/updatePwd",
+          params, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }
       );
 
-      if (response.data.code == 200) {
+      if (response.status == 200) {
         ElMessage.success("修改密码成功");
         router.push("/auth/login");
       } else {
@@ -70,34 +81,34 @@ async function handleUpdatePwd() {
 
     <el-main class="update-pwd-main">
       <el-form
-        :model="updatePwdForm"
-        :rules="rules"
-        status-icon
-        ref="updatePwdFormRef1"
+          :model="updatePwdForm"
+          :rules="rules"
+          status-icon
+          ref="updatePwdFormRef1"
       >
         <el-form-item prop="name">
-          <el-input v-model="updatePwdForm.name" placeholder="用户名" />
+          <el-input v-model="updatePwdForm.name" placeholder="用户名"/>
         </el-form-item>
         <el-form-item prop="oldPassword">
-          <el-input v-model="updatePwdForm.oldPassword" placeholder="旧密码" />
+          <el-input v-model="updatePwdForm.oldPassword" placeholder="旧密码"/>
         </el-form-item>
       </el-form>
 
-      <el-divider direction="vertical" class="divider" />
+      <el-divider direction="vertical" class="divider"/>
 
       <el-form
-        :model="updatePwdForm"
-        :rules="rules"
-        status-icon
-        ref="updatePwdFormRef2"
+          :model="updatePwdForm"
+          :rules="rules"
+          status-icon
+          ref="updatePwdFormRef2"
       >
         <el-form-item prop="newPassword">
-          <el-input v-model="updatePwdForm.newPassword" placeholder="新密码" />
+          <el-input v-model="updatePwdForm.newPassword" placeholder="新密码"/>
         </el-form-item>
         <el-form-item prop="confirmNewPassword">
           <el-input
-            v-model="updatePwdForm.confirmNewPassword"
-            placeholder="确认新密码"
+              v-model="updatePwdForm.confirmNewPassword"
+              placeholder="确认新密码"
           />
         </el-form-item>
       </el-form>

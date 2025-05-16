@@ -24,14 +24,15 @@ async function handleLogin() {
   try {
     const valid = await loginFormRef.value.validate();
     if (valid) {
+      //console.log(loginForm.value);
       const response = await axios.post(
-        "http://127.0.0.1:8080/api/user/login",
+        "/api/user/login",
         loginForm.value
       );
-
-      if (response.data.code == 200) {
+      // console.log(response);
+      if (response.status == 200) {
         ElMessage.success("登录成功");
-        sessionStorage.setItem("user", JSON.stringify(response.data.data));
+        sessionStorage.setItem("user", JSON.stringify(response.data));
         router.push("/home/front");
       } else {
         ElMessage.error(response.data.message);

@@ -59,15 +59,15 @@ async function handleRegister() {
       registerFormRef2.value.validate(),
     ]);
     if (valid1 && valid2) {
+      console.log(registerForm.value);
+
       const response = await axios.post(
-        "http://127.0.0.1:8080/api/user/register",
+        "/api/user/register",
         registerForm.value
       );
 
-      console.log(registerForm.value);
-      
 
-      if (response.data.code == 200) {
+      if (response.status == 200) {
         ElMessage.success("注册成功");
         router.push("/auth/login");
       } else {
