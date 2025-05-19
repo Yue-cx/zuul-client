@@ -49,22 +49,7 @@ async function handleLogin() {
     <el-header class="login-header">登 录</el-header>
 
     <el-main class="login-main">
-      <div class="button-group">
-        <el-button type="primary">
-          <QqOutlined class="button-icon" />
-          QQ登录
-        </el-button>
-        <el-button type="success">
-          <WechatOutlined class="button-icon" />
-          微信登录
-        </el-button>
-        <el-button>
-          <AlipayOutlined class="button-icon" />
-          支付宝登录
-        </el-button>
-      </div>
 
-      <el-divider direction="vertical" class="divider" />
 
       <el-form :model="loginForm" :rules="rules" status-icon ref="loginFormRef">
         <el-form-item prop="name">
@@ -116,6 +101,9 @@ async function handleLogin() {
 .login-main {
   display: flex;
   padding: 12px 25px;
+  justify-content: center; /* 水平居中 */
+  align-items: center;     /* 垂直居中 */
+
 }
 
 .login-main .button-group {
