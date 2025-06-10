@@ -1,6 +1,7 @@
 <script setup>
 import anime from "animejs/lib/anime.es.js";
 
+
 function beforeEnter(el) {
   anime.set(el, {
     opacity: 0,
