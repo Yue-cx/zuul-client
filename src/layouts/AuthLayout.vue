@@ -56,6 +56,7 @@ onMounted(() => {
   });
 });
 </script>
+
 <template>
   <el-container class="auth-container">
     <el-main class="auth-main">
